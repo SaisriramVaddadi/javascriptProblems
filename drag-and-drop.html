@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Drag and Drop</title>
+    <style>
+        #dragElement {
+            width: 150px;
+            height: 150px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            line-height: 150px;
+            margin: 20px;
+            cursor: move;
+        }
+
+        #dropZone {
+            width: 300px;
+            border: 3px dashed #ccc;
+            text-align: center;
+            line-height: 300px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #dropZone.hovered {
+            border-color: #4CAF50;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Drag and Drop Example</h2>
+
+    <!-- Draggable element -->
+    <div id="dragElement" draggable="true">
+        Drag me!
+    </div>
+
+    <!-- Drop zone -->
+    <div id="dropZone">
+        <p>Drop here!</p>
+        
+    </div>
+
+    <script>
+        const dragElement = document.getElementById("dragElement");
+        const dropZone = document.getElementById("dropZone");
+
+        // Add event listeners for drag events
+        dragElement.addEventListener("dragstart", function (event) {
+            // Set data to be transferred
+            event.dataTransfer.setData("text", event.target.id);
+        });
+
+        // Prevent default behavior to allow drop
+        dropZone.addEventListener("dragover", function (event) {
+            event.preventDefault();
+            dropZone.classList.add("hovered");  // Optional: Add hover effect
+        });
+
+        // Remove hover effect when not over the drop zone
+        dropZone.addEventListener("dragleave", function () {
+            dropZone.classList.remove("hovered");
+        });
+
+        // Handle the drop event
+        dropZone.addEventListener("drop", function (event) {
+            event.preventDefault();
+            dropZone.classList.remove("hovered");
+
+            // Get the id of the draggable element
+            const data = event.dataTransfer.getData("text");
+            const draggableElement = document.getElementById(data);
+
+            // Append the draggable element to the drop zone
+            dropZone.appendChild(draggableElement);
+            console.log(dropZone);
+        });
+    </script>
+
+</body>
+
+</html>

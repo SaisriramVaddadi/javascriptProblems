@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .location-container {
+            display: flex;
+            flex-direction: column;
+            border: 1px dotted rgb(211, 211, 211);
+            padding: 1rem;
+        }
+
+        .hidden-location-container {
+            display: none;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <button onclick="getLocation()">Show Location</button>
+        <div class="location-container">
+            <div>
+                <span>latitude: </span> <span class="latitude"></span>
+            </div>
+            <div>
+                <span>longitude: </span> <span class="longitude"></span>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            }
+            else {
+                showError({ message: "Something went wrong!" })
+            }
+        }
+
+        const showPosition = (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Access the first element with the class "latitude"
+            const latitudeElement = document.getElementsByClassName("latitude")[0];
+            if (latitudeElement) {
+                latitudeElement.innerHTML = latitude;
+            } else {
+                console.error("Latitude element not found!");
+            }
+
+            // Access the first element with the class "longitude"
+            const longitudeElement = document.getElementsByClassName("longitude")[0];
+            if (longitudeElement) {
+                longitudeElement.innerHTML = longitude;
+            } else {
+                console.error("Longitude element not found!");
+            }
+        }
+        const showError = (error) => {
+            const errorElement = document.createElement("p");
+            errorElement.innerHTML = error.message;
+            errorElement.classList.add("error");
+
+            // Since getElementsByClassName returns an HTMLCollection, you need to access the first element
+            const mainContainer = document.getElementsByClassName("main-container")[0];
+
+            // Make sure the container exists before appending the error element
+            if (mainContainer) {
+                mainContainer.appendChild(errorElement);
+            } else {
+                console.error("Main container not found!");
+            }
+
+            const locationContainer = document.getElementsByClassName("location-container")[0];
+
+            // Make sure the location container exists before adding the class
+            if (locationContainer) {
+                locationContainer.classList.add("hidden-location-container");
+            } else {
+                console.error("Location container not found!");
+            }
+        }
+
+    </script>
+</body>
+
+</html>
